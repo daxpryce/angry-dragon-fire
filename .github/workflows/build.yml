@@ -16,7 +16,7 @@ jobs:
           python-version: "${{matrix.python_version}}"
       - uses: actions-rs/toolchain@v1
         with:
-          profile: minimal
+          profile: default
           toolchain: stable
           default: true
           override: true
