@@ -21,7 +21,7 @@ jobs:
         if: ${{ matrix.os == 'ubuntu-latest' }}
         with:
           maturin-version: latest
-          command: build
+          command: build --interpreter python3.9
           target: x64
           args: --release
           manylinux: 2010
