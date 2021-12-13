@@ -25,7 +25,7 @@ jobs:
         with:
           command: fmt -- --check
       - uses: messense/maturin-action@v1
-        if: ${{ matrix.os == "ubuntu-latest" }}
+        if: ${{ matrix.os == 'ubuntu-latest' }}
         with:
           maturin-version: latest
           command: build
@@ -33,7 +33,7 @@ jobs:
           args: --release
           manylinux: 2010
       - uses: messense/maturin-action@v1
-        if: ${{ matrix.os != "ubuntu-latest" }}
+        if: ${{ matrix.os != 'ubuntu-latest' }}
         with:
           maturin-version: latest
           command: build
