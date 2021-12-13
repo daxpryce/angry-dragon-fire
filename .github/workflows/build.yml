@@ -18,9 +18,6 @@ jobs:
         with:
           profile: default
           toolchain: stable
-          default: true
-          override: true
-          components: rustfmt
       - name: Run cargo format check
         uses: actions-rs/cargo@v1
         with:
