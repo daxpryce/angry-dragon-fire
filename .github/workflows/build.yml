@@ -7,31 +7,40 @@ jobs:
     strategy:
       matrix:
         os: ["ubuntu-latest", "windows-latest", "macos-latest"]
-        python_version: ["3.6", "3.7", "3.8", "3.9", "3.10"]
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Python ${{matrix.python_version}}
+      - name: Python Environment
         uses: actions/setup-python@v2
         with:
-          python-version: "${{matrix.python_version}}"
-      - name: Run cargo format check
+          python-version: 3.9
+      - name: Code style
         run: |
           cargo fmt -- --check
+      - uses: messense/maturin-action@v1
+        if: ${{ matrix.os == 'windows-latest' }}
+        with:
+          maturin-version: latest
+          command: build
+          target: x64
+          args: --release -i python3.9.exe --no-sdist
+      - uses: messense/maturin-action@v1
+        if: ${{ matrix.os == 'macos-latest' }}
+        with:
+          maturin-version: latest
+          command: build
+          target: x64
+          args:  --release --no-sdist --universal2
       - uses: messense/maturin-action@v1
         if: ${{ matrix.os == 'ubuntu-latest' }}
         with:
           maturin-version: latest
-          command: build --interpreter python3.9
-          target: x64
-          args: --release
-          manylinux: 2010
-      - uses: messense/maturin-action@v1
-        if: ${{ matrix.os != 'ubuntu-latest' }}
-        with:
-          maturin-version: latest
           command: build
-          args: --release
+          target: x64
+          args: --release --no-sdist
+          manylinux: 2014
       - uses: actions/upload-artifact@v2
         with:
           name: wheels
-          path: target/wheels/*.whl
+          path: |
+            target/wheels/*.whl
+            target/wheels/*.tar.gz
