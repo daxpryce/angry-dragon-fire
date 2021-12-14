@@ -16,6 +16,10 @@ jobs:
       - name: Code style
         run: |
           cargo fmt -- --check
+      - name: Print environment
+        if: ${{ matrix.os == 'windows-latest' }}
+        run: |
+          set
       - uses: messense/maturin-action@v1
         if: ${{ matrix.os == 'windows-latest' }}
         with:
@@ -23,10 +27,6 @@ jobs:
           command: build
           target: x64
           args: --release -i python3.9.exe --no-sdist
-      - name: Print environment
-        if: ${{ matrix.os == 'windows-latest' }}
-        run: |
-          set
       - uses: messense/maturin-action@v1
         if: ${{ matrix.os == 'macos-latest' }}
         with:
