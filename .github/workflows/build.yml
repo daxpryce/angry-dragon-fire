@@ -6,7 +6,7 @@ jobs:
     continue-on-error: true
     strategy:
       matrix:
-        os: ["ubuntu-latest", "windows-latest"] #, "macos-latest"]
+        os: ["ubuntu-latest", "windows-latest", "macos-latest"]
     steps:
       - uses: actions/checkout@v2
       - name: Python Environment
@@ -23,6 +23,10 @@ jobs:
           command: build
           target: x64
           args: --release -i python3.9.exe --no-sdist
+      - name: Print environment
+        if: ${{ matrix.os == 'windows-latest' }}
+        run: |
+          set
       - uses: messense/maturin-action@v1
         if: ${{ matrix.os == 'macos-latest' }}
         with:
@@ -39,7 +43,7 @@ jobs:
           manylinux: 2014
       - uses: actions/upload-artifact@v2
         with:
-          name: wheels
+          name: dist
           path: |
             target/wheels/*.whl
             target/wheels/*.tar.gz
