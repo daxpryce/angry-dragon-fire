@@ -6,7 +6,7 @@ jobs:
     continue-on-error: true
     strategy:
       matrix:
-        os: ["ubuntu-latest", "windows-latest", "macos-latest"]
+        os: ["ubuntu-latest", "windows-latest"] #, "macos-latest"]
     steps:
       - uses: actions/checkout@v2
       - name: Python Environment
@@ -28,14 +28,14 @@ jobs:
         with:
           maturin-version: latest
           command: build
-          args:  --release --no-sdist --universal2
+          args:  --release --universal2 --no-sdist
       - uses: messense/maturin-action@v1
         if: ${{ matrix.os == 'ubuntu-latest' }}
         with:
           maturin-version: latest
           command: build
           target: x64
-          args: --release --no-sdist
+          args: --release
           manylinux: 2014
       - uses: actions/upload-artifact@v2
         with:
